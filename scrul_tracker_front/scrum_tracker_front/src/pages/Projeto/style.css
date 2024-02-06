@@ -1,0 +1,27 @@
+.container-projeto {
+    position: relative;
+}
+
+.container-btn {
+    display: flex;
+    justify-content: end;
+
+    padding: 20px 50px 0 0;
+}
+
+.btn-register-projeto {
+    width: 65px;
+    height: 65px;
+
+    border-radius: 50%;
+    color: white;
+    font-size: 30px;
+
+    background-color: #2FD89B;
+    border: 1px solid rgba(128, 128, 128, 0.66);
+    box-shadow: 1px 1px 0px 1px rgba(0, 0, 0, 0.75);
+    -webkit-box-shadow: 3px 2px 0px 1px rgba(0, 0, 0, 0.918);
+    -moz-box-shadow: 3px 3px 0px 1px rgba(0, 0, 0, 0.75);
+
+    cursor: pointer;
+}

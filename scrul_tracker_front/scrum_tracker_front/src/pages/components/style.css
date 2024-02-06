@@ -1,0 +1,42 @@
+nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 15px 50px;
+
+    width: 100%;
+
+    background-color: black;
+}
+
+nav img {
+    width: 150px;
+}
+
+.container-informacoes-usuario {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.container-informacoes-usuario-role {
+    display: flex;
+    justify-content: center;
+
+    padding: 10px;
+    background-color: #2FD89B;
+    border-radius: 30px;
+}
+
+.container-informacoes-usuario-role h2 {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: 15px;
+    color: white;
+}
+
+.container-informacoes-usuario h3 {
+    color: white;
+
+    text-transform: capitalize;
+}

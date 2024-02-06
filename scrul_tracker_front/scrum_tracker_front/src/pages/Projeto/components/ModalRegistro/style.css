@@ -1,0 +1,112 @@
+.container-bg-registro-projeto {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    position: absolute;
+
+    width: 100vw;
+    height: 100vh;
+
+    background-color: rgba(0, 0, 0, 0.35);
+
+    z-index: 1;
+}
+
+.container-modal-registro-projeto {
+    width: 25%;
+    height: 60%;
+
+    position: absolute;
+    background-color: white;
+    border-radius: 10px;
+    border: 1.5px solid #2FD89B;
+}
+
+.container-modal-registro-projeto header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin: 20px 35px;
+}
+
+.container-modal-registro-projeto header div {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+}
+
+.container-bg-registro-projeto main {
+    padding-top: 20px;
+}
+
+.container-bg-registro-projeto form {
+    width: 100%;
+
+    padding: 0 30px;
+}
+
+.input-projeto {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+    width: 100%;
+}
+
+.input-projeto label {
+    width: 20%;
+}
+
+.input-projeto input {
+    height: 30px;
+    width: 100%;
+
+    border-radius: 5px;
+    border: 0.8px solid rgba(128, 128, 128, 0.537);
+}
+
+.input-maior input {
+    height: 100px;
+}
+
+.btns-modal-registro {
+    margin-top: 30px;
+
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+}
+
+.btns-modal-registro button {
+    width: 30%;
+
+    padding: 15px;
+
+    border-radius: 9px;
+    border: 0.5px solid rgb(202, 186, 186);
+
+    cursor: pointer;
+}
+
+.btns-modal-registro button:first-child {
+    background-color: #2FD89B;
+    color: white;
+}
+
+.btns-modal-registro button:first-child:hover {
+    background-color: white;
+    color: #2FD89B;
+}
+
+.btns-modal-registro button:last-child {
+    background-color: white;
+    color: #2FD89B;
+}
+
+.btns-modal-registro button:last-child:hover {
+    background-color: #2FD89B;
+    color: white;
+}
