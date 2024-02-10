@@ -4,6 +4,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import br.meuprojeto.scrum_tracker.models.Projeto;
 
-public interface ProjetoRepository extends JpaRepository<Projeto, Integer> {
+//import java.util.List;
 
+public interface ProjetoRepository extends JpaRepository<Projeto, Integer> {
+    // List<Projeto> findById(Integer id);
 }

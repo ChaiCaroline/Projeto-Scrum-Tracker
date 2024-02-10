@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-ScrumTrackerApplication<scrum_tracker>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "br.meuprojeto.scrum_tracker.ScrumTrackerApplication",
+            "projectName": "scrum_tracker",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

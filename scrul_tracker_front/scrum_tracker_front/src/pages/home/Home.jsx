@@ -6,11 +6,14 @@ import IconSenha from '../../assets/Senha.svg';
 import { useState } from "react";
 import api from '../../connections/api/api'
 import { useNavigate } from "react-router-dom";
+import useStore from "../../hook/store";
+
 
 export default function Home() {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
+    const store = useStore()
 
     async function enviarLogin(e) {
         e.preventDefault()
@@ -22,7 +25,8 @@ export default function Home() {
                 }
             })
 
-            console.log(response);
+            store.setRespostaApi(response.data)
+
             navigate("/scrum");
         } catch (error) {
             console.log(error);

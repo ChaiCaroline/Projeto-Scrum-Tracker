@@ -1,6 +1,7 @@
 package br.meuprojeto.scrum_tracker.controllers;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.meuprojeto.scrum_tracker.dto.ProjetoDto;
 import br.meuprojeto.scrum_tracker.dto.UsuarioDto;
 import br.meuprojeto.scrum_tracker.models.Usuario;
 import br.meuprojeto.scrum_tracker.repository.UsuarioRepository;
@@ -28,11 +30,17 @@ public class UsuarioController {
 
     @GetMapping
     public ResponseEntity<UsuarioDto> listarUsuario(@RequestHeader("email") String email) {
-        List<Usuario> usuarioLogado = usuarioRepository.findByEmail(email);
+        Usuario usuarioLogado = usuarioRepository.findByEmail(email).get(0);
 
-        UsuarioDto usuario = new UsuarioDto(email, usuarioLogado.get(0).getRole());
+        // Convertendo os projetos para ProjetoDto
+        List<ProjetoDto> projetosDto = usuarioLogado.getProjetos().stream()
+                .map(projeto -> new ProjetoDto(projeto.getNome(), projeto.getCliente(), projeto.getDescricao(),
+                        projeto.getVisao()))
+                .collect(Collectors.toList());
 
-        return new ResponseEntity<UsuarioDto>(usuario, HttpStatus.ACCEPTED);
+        UsuarioDto usuario = new UsuarioDto(usuarioLogado.getNome(), email, usuarioLogado.getRole(), projetosDto);
+
+        return new ResponseEntity<>(usuario, HttpStatus.ACCEPTED);
     }
 
     @PostMapping
@@ -40,4 +48,5 @@ public class UsuarioController {
         Usuario novUsuario = usuarioRepository.save(usuario);
         return new ResponseEntity<Usuario>(novUsuario, HttpStatus.CREATED);
     }
+
 }
