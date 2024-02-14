@@ -1,5 +1,6 @@
 package br.meuprojeto.scrum_tracker.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import br.meuprojeto.scrum_tracker.enums.RoleEnum;
@@ -40,7 +41,7 @@ public class Usuario {
 
     @ManyToMany /* (mappedBy = "usuarios") */
     @JoinTable(name = "projeto_usuario", joinColumns = @JoinColumn(name = "usuario_id"), inverseJoinColumns = @JoinColumn(name = "projeto_id"))
-    private List<Projeto> projetos;
+    private List<Projeto> projetos = new ArrayList<>();;
 
     // Implementar Depois
     // @Getter

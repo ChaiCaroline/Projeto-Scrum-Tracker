@@ -1,6 +1,6 @@
 
 import logo from '../../assets/Logo.svg'
-import useStore from '../../hook/store'
+import useStore from '../../hook/useProjeto'
 import './style.css'
 
 export default function Menu() {

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.meuprojeto.scrum_tracker.dto.ProjetoDto;
@@ -22,7 +23,7 @@ import jakarta.validation.Valid;
 
 @CrossOrigin(origins = "http://localhost:5173")
 @RestController
-@RequestMapping("/login")
+@RequestMapping("/scrumUsuario")
 public class UsuarioController {
 
     @Autowired
@@ -47,6 +48,28 @@ public class UsuarioController {
     public ResponseEntity<Usuario> cadastrarUsuario(@RequestBody @Valid Usuario usuario) {
         Usuario novUsuario = usuarioRepository.save(usuario);
         return new ResponseEntity<Usuario>(novUsuario, HttpStatus.CREATED);
+    }
+
+    @SuppressWarnings("rawtypes")
+    @GetMapping("/usuarios")
+    public ResponseEntity<List> listarTodosUsuarios(@RequestHeader("email") String email) {
+        List<Usuario> usuariosFitlrados = usuarioRepository.findAll();
+
+        List<String> usuarios = usuariosFitlrados.stream().map(usuario -> (usuario.getNome()))
+                .collect(Collectors.toList());
+
+        return new ResponseEntity<List>(usuarios, HttpStatus.OK);
+    }
+
+    @SuppressWarnings("rawtypes")
+    @GetMapping("/usuarios-sem-projeto")
+    public ResponseEntity<List> getUsuariosNaoAlocados(@RequestParam String nomeProjeto) {
+        List<Usuario> usuariosSemProjeto = usuarioRepository.findUsuariosNaoAlocados(nomeProjeto);
+
+        List<String> usuariosSemProjetoSolicitado = usuariosSemProjeto.stream().map(usuario -> (usuario.getNome()))
+                .collect(Collectors.toList());
+
+        return new ResponseEntity<List>(usuariosSemProjetoSolicitado, HttpStatus.OK);
     }
 
 }

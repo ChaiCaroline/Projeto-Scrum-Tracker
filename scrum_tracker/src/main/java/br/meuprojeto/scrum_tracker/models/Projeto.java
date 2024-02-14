@@ -1,5 +1,6 @@
 package br.meuprojeto.scrum_tracker.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.Column;
@@ -35,5 +36,5 @@ public class Projeto {
 
     @ManyToMany
     @JoinTable(name = "projeto_usuario", joinColumns = @JoinColumn(name = "projeto_id"), inverseJoinColumns = @JoinColumn(name = "usuario_id"))
-    private List<Usuario> usuarios;
+    private List<Usuario> usuarios = new ArrayList<>();;
 }

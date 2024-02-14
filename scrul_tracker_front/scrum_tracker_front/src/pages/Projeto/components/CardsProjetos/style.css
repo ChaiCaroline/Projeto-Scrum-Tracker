@@ -1,0 +1,24 @@
+.container-card-projeto {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    width: 150px;
+    height: 150px;
+
+    /* box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1), 0px 10px 15px -3px rgba(0, 0, 0, 0.1); */
+    background-color: #2FD89B;
+    box-shadow: 12px 13px 8px -3px rgba(0, 0, 0, 0.1);
+    color: white;
+    font-size: x-large;
+
+    cursor: pointer;
+}
+
+.container-card-projeto:hover {
+    background-color: white;
+    color: black;
+    text-decoration: underline dotted #2FD89B;
+    box-shadow: 0px 11px 0px -7px rgba(0, 0, 0, 0.1);
+}

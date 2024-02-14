@@ -1,15 +1,18 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import usuarioIcon from '../../assets/cadastrarUsuario.png';
-import useStore from "../../hook/store";
 import Menu from "../components/Menu";
 import ModalCadastrarUsuario from "./components/ModalCadastrarUsuario/ModalCadastrarUsuario";
 import ModalRegistro from "./components/ModalRegistro/ModalRegistro";
 import './style.css';
+import CardsProjetos from "./components/CardsProjetos/CardsProjetos";
+import ModalProjeto from "./components/ModalProjeto/ModalProjeto";
+import useProjeto from "../../hook/useProjeto";
 
 export default function Projeto() {
     const [modalRegistroProjeto, setModalRegistroProjeto] = useState(false)
     const [modalCadastrarUsuario, setModalCadastrarUsuario] = useState(false)
-    const { respostaApi } = useStore();
+
+    const { respostaApi, modalProjeto } = useProjeto();
 
     return (
         <div className="container-projeto">
@@ -21,6 +24,10 @@ export default function Projeto() {
             {modalCadastrarUsuario ?
                 <ModalCadastrarUsuario
                     setModalCadastrarUsuario={setModalCadastrarUsuario}
+                />
+                : " "}
+            {modalProjeto ?
+                <ModalProjeto
                 />
                 : " "}
             <Menu />
@@ -39,7 +46,13 @@ export default function Projeto() {
                     : null}
             </div>
             <main>
-
+                {respostaApi.projetos.map((projeto, index) => (
+                    <React.Fragment key={index} >
+                        <CardsProjetos
+                            projeto={projeto}
+                        />
+                    </React.Fragment>
+                ))}
             </main>
         </div >
     )

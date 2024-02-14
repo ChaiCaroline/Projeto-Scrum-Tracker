@@ -38,3 +38,10 @@
 .btn-register-projeto img {
     width: 50%;
 }
+
+main {
+    display: flex;
+    gap: 20px;
+
+    padding: 0 20px;
+}

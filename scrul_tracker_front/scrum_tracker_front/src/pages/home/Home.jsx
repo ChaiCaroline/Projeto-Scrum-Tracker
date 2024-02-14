@@ -6,26 +6,26 @@ import IconSenha from '../../assets/Senha.svg';
 import { useState } from "react";
 import api from '../../connections/api/api'
 import { useNavigate } from "react-router-dom";
-import useStore from "../../hook/store";
+import useProjeto from "../../hook/useProjeto";
 
 
 export default function Home() {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
-    const store = useStore()
+    const { setRespostaApi } = useProjeto()
 
     async function enviarLogin(e) {
         e.preventDefault()
 
         try {
-            const response = await api.get("/login", {
+            const response = await api.get("/scrumUsuario", {
                 headers: {
                     email: email,
                 }
             })
 
-            store.setRespostaApi(response.data)
+            setRespostaApi(response.data)
 
             navigate("/scrum");
         } catch (error) {

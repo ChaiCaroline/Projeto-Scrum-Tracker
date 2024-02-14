@@ -3,6 +3,7 @@ import IconRegistro from '../../../../assets/IconRegistro.svg'
 import FecharModal from '../../../../assets/Close.svg'
 import api from '../../../../connections/api/api'
 import { useState } from 'react'
+import useProjeto from '../../../../hook/useProjeto'
 
 // eslint-disable-next-line react/prop-types
 export default function ModalRegistro({ setModalRegistroProjeto }) {
@@ -13,16 +14,34 @@ export default function ModalRegistro({ setModalRegistroProjeto }) {
         visao: ""
     })
 
+    const { respostaApi } = useProjeto();
+
     async function registrarProjeto(e) {
         e.preventDefault()
 
         try {
             await api.post("/scrum", {
                 ...formProjeto
-            })
+            },
+                {
+                    headers: {
+                        usuario: respostaApi.nome,
+                    }
+                }
+            )
 
-            //console.log(response);
             setModalRegistroProjeto(false)
+
+            /* try {
+                await api.post("/scrum/adicionarUsuario", {
+                    Headers: {
+                        usuario: respostaApi.nome,
+                        projeto: formProjeto.nome
+                    }
+                })
+            } catch (error) {
+                console.log(error);
+            } */
         } catch (error) {
             console.log(error);
         }

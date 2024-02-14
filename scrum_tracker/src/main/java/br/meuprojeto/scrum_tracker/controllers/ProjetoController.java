@@ -29,23 +29,48 @@ public class ProjetoController {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @PostMapping
-    public ResponseEntity<Projeto> cadastrarProjeto(@RequestBody @Valid Projeto projeto) {
-        projetoRepository.save(projeto);
-        return new ResponseEntity<Projeto>(HttpStatus.CREATED);
+    public ResponseEntity<String> cadastrarProjeto(@RequestBody @Valid Projeto projeto,
+            @RequestHeader("usuario") String usuarioNome) {
+        Projeto projetoCriado = projetoRepository.save(projeto);
+
+        // Verifica se o projeto foi criado com sucesso
+        if (projetoCriado != null) {
+            // Encontra o usuário pelo nome
+            Usuario usuario = usuarioRepository.findByNome(usuarioNome);
+
+            // Verifica se o usuário foi encontrado
+            if (usuario != null) {
+                // Adiciona o usuário ao projeto
+                projetoCriado.getUsuarios().add(usuario);
+                projetoRepository.save(projetoCriado);
+            } else {
+                // Lida com o caso em que o usuário não foi encontrado
+                return new ResponseEntity("Usuário não encontrado", HttpStatus.NOT_FOUND);
+            }
+        } else {
+            // Lida com o caso em que o projeto não foi criado corretamente
+            return new ResponseEntity("Erro ao criar o projeto", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return new ResponseEntity<String>("Projeto Criado com Sucesso", HttpStatus.CREATED);
     }
 
     @PostMapping("/adicionarUsuario")
-    public ResponseEntity<Usuario> AdicionarUsuario(@RequestHeader("projeto") Integer projetoId,
-            @RequestHeader("usuario") Integer usuarioId) {
-        Projeto projetoAtual = projetoRepository.findById(projetoId).get();
-        Boolean usuarioExiste = usuarioRepository.existsById(usuarioId);
+    public ResponseEntity<Usuario> AdicionarUsuario(@RequestHeader("projeto") String projetoNome,
+            @RequestHeader("usuario") String usuarioNome) {
+        Projeto projeto = projetoRepository.findByNome(projetoNome);
+        Usuario usuario = usuarioRepository.findByNome(usuarioNome);
+
+        Optional<Projeto> projetoAtual = projetoRepository.findById(projeto.getId());
+        Boolean usuarioExiste = usuarioRepository.existsById(usuario.getId());
 
         if (usuarioExiste) {
-            Optional<Usuario> usuarioPesquisado = usuarioRepository.findById(usuarioId);
-            projetoAtual.getUsuarios().add(usuarioPesquisado.get());
+            Optional<Usuario> usuarioPesquisado = usuarioRepository.findById(usuario.getId());
+            projetoAtual.get().getUsuarios().add(usuarioPesquisado.get());
 
-            projetoRepository.save(projetoAtual);
+            projetoRepository.save(projetoAtual.get());
 
             return new ResponseEntity<Usuario>(HttpStatus.ACCEPTED);
         }
