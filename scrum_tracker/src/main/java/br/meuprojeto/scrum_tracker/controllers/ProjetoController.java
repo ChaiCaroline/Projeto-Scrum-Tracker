@@ -1,7 +1,5 @@
 package br.meuprojeto.scrum_tracker.controllers;
 
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.meuprojeto.scrum_tracker.dto.UsuarioAoProjetoDto;
 import br.meuprojeto.scrum_tracker.models.Projeto;
 import br.meuprojeto.scrum_tracker.models.Usuario;
 import br.meuprojeto.scrum_tracker.repository.ProjetoRepository;
@@ -58,24 +57,30 @@ public class ProjetoController {
     }
 
     @PostMapping("/adicionarUsuario")
-    public ResponseEntity<Usuario> AdicionarUsuario(@RequestHeader("projeto") String projetoNome,
-            @RequestHeader("usuario") String usuarioNome) {
-        Projeto projeto = projetoRepository.findByNome(projetoNome);
-        Usuario usuario = usuarioRepository.findByNome(usuarioNome);
+    public ResponseEntity<?> adicionarUsuario(@RequestBody UsuarioAoProjetoDto usuariosEProjeto) {
 
-        Optional<Projeto> projetoAtual = projetoRepository.findById(projeto.getId());
-        Boolean usuarioExiste = usuarioRepository.existsById(usuario.getId());
+        Projeto projeto = projetoRepository.findByNome(usuariosEProjeto.getProjeto());
 
-        if (usuarioExiste) {
-            Optional<Usuario> usuarioPesquisado = usuarioRepository.findById(usuario.getId());
-            projetoAtual.get().getUsuarios().add(usuarioPesquisado.get());
-
-            projetoRepository.save(projetoAtual.get());
-
-            return new ResponseEntity<Usuario>(HttpStatus.ACCEPTED);
+        if (projeto == null) {
+            return ResponseEntity.badRequest().body("Projeto não encontrado");
         }
 
-        return new ResponseEntity<Usuario>(HttpStatus.BAD_REQUEST);
+        for (String usuarioNome : usuariosEProjeto.getUsuarios()) {
+            Usuario usuario = usuarioRepository.findByNome(usuarioNome);
 
+            if (usuario == null) {
+                return ResponseEntity.badRequest().body("Usuário não encontrado: " + usuarioNome);
+            }
+
+            if (projeto.getUsuarios().contains(usuario)) {
+                return ResponseEntity.badRequest().body("Usuário já está associado ao projeto: " + usuarioNome);
+            }
+
+            projeto.getUsuarios().add(usuario);
+        }
+
+        projetoRepository.save(projeto);
+        return ResponseEntity.ok().body("Usuários adicionados ao projeto com sucesso");
     }
+
 }

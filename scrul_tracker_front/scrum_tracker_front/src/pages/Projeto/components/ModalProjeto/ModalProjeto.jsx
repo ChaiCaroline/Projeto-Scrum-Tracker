@@ -1,11 +1,16 @@
 import './style.css'
 import FecharModal from '../../../../assets/Close.svg'
 import useProjeto from '../../../../hook/useProjeto';
-import { useEffect, useState } from 'react';
+import api from '../../../../connections/api/api'
+import { useEffect, useRef, useState } from 'react';
 
 export default function ModalProjeto() {
 
     const { setModalProjeto, projetoSelecionado, respostaApi } = useProjeto();
+    //const [usuarios, SetUsuarios] = useState([]);
+    const [usuariosSelecionados, setUsuariosSelecionados] = useState([])
+    const [listaDeParticipantesProjeto, setListaDeParticipantesProjeto] = useState([]);
+    const selectInput = useRef(null)
 
     const [dadosFormProjeto, setDadosFormProjeto] = useState({
         nome: "",
@@ -14,8 +19,32 @@ export default function ModalProjeto() {
         visao: ""
     })
 
+    function adicionarParticipantes() {
+        const novaLista = listaDeParticipantesProjeto.concat(selectInput.current.value)
+        setListaDeParticipantesProjeto(novaLista)
+
+        console.log(listaDeParticipantesProjeto);
+    }
+
     function handleChange(indice) {
         setDadosFormProjeto({ ...dadosFormProjeto, [indice.target.name]: indice.target.value })
+    }
+
+    async function usuariosSemProjeto() {
+        try {
+            const usuariosSelecionados = await api.get("/scrumUsuario/usuarios-sem-projeto", {
+                params: {
+                    nomeProjeto: projetoSelecionado
+                }
+            })
+
+            setUsuariosSelecionados(usuariosSelecionados.data);
+
+            console.log(usuariosSelecionados);
+
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     useEffect(() => {
@@ -27,6 +56,10 @@ export default function ModalProjeto() {
             visao: projetoSelecionadoPeloUsuario.visao
         })
     }, [])
+
+    useEffect(() => {
+        usuariosSemProjeto();
+    }, [projetoSelecionado])
 
     return (
         <div className='container-bg-registro-projeto'>
@@ -52,6 +85,16 @@ export default function ModalProjeto() {
                         <div className='input-projeto input-maior'>
                             <label htmlFor="">Visão do Produto:</label>
                             <input type="text" value={dadosFormProjeto.visao} onChange={handleChange} name='visao' />
+                        </div>
+                        <div className='input-projeto'>
+                            <label htmlFor="">Usuarios:</label>
+                            <input name='usuario'/*  autoCorrect='on' */ list='usuarios' />
+                            <datalist id='usuarios'>
+                                {usuariosSelecionados.map((usuario, index) => (
+                                    <option value={usuario} key={index} ref={selectInput}>{usuario}</option>
+                                ))}
+                            </datalist>
+                            <button type='button' className='btn-adicionar-usuario' onClick={adicionarParticipantes}>Adicionar</button>
                         </div>
                         <div className='btns-modal-registro'>
                             <button type='submit'>Atualizar</button>
